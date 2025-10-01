@@ -1,11 +1,22 @@
 const { Sequelize, DataTypes } = require("sequelize");
-
 const path = require("path");
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
   storage: path.join(__dirname, "../db/db.sqlite"),
   logging: false,
+});
+
+const Actor = sequelize.define("Actor", {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });
 
 const Movie = sequelize.define("Movie", {
@@ -26,10 +37,17 @@ const Movie = sequelize.define("Movie", {
     type: DataTypes.ENUM("VHS", "DVD", "Blu-ray"),
     allowNull: false,
   },
-  actors: {
-    type: DataTypes.JSON,
-    allowNull: false,
-  },
 });
 
-module.exports = { sequelize, Movie };
+Movie.belongsToMany(Actor, { through: "MovieActors", as: "actors" });
+Actor.belongsToMany(Movie, { through: "MovieActors", as: "movies" });
+
+Movie.beforeUpdate((movie) => {
+  movie.updatedAt = new Date();
+});
+
+Actor.beforeUpdate((actor) => {
+  actor.updatedAt = new Date();
+});
+
+module.exports = { sequelize, Movie, Actor };
