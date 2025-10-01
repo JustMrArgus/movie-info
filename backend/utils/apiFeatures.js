@@ -54,9 +54,10 @@ class APIFeatures {
   }
 
   sort() {
-    const { sort = "id" } = this.queryString;
-    const { order = "ASC" } = this.queryString;
-    this.options.order = [[sort, order.toUpperCase()]];
+    const { sort, order } = this.queryString;
+    const sortField = sort || "id";
+    const sortOrder = (order || "ASC").toUpperCase();
+    this.options.order = [[sortField, sortOrder]];
     return this;
   }
 
@@ -68,7 +69,8 @@ class APIFeatures {
   }
 
   offset() {
-    const { offset = 0 } = this.queryString;
+    const { offset } = this.queryString;
+    if (!offset) return this;
     this.options.offset = parseInt(offset, 10);
     return this;
   }
