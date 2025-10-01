@@ -42,12 +42,4 @@ const Movie = sequelize.define("Movie", {
 Movie.belongsToMany(Actor, { through: "MovieActors", as: "actors" });
 Actor.belongsToMany(Movie, { through: "MovieActors", as: "movies" });
 
-Movie.beforeUpdate((movie) => {
-  movie.updatedAt = new Date();
-});
-
-Actor.beforeUpdate((actor) => {
-  actor.updatedAt = new Date();
-});
-
 module.exports = { sequelize, Movie, Actor };
