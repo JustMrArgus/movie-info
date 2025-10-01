@@ -32,7 +32,7 @@ exports.createMovie = async (req, res) => {
       ],
     });
 
-    res.status(201).json({
+    res.status(200).json({
       data: completeMovie,
       status: 1,
     });
@@ -111,12 +111,10 @@ exports.getMovies = async (req, res) => {
 
     const movies = await features.exec();
 
-    const moviesTotalCount = await Movie.count();
-
     res.status(200).json({
       data: movies,
       meta: {
-        total: moviesTotalCount,
+        total: movies.length,
       },
       status: 1,
     });
