@@ -1,7 +1,10 @@
 const express = require("express");
 const movieController = require("../controllers/movie.controller");
+const protect = require("../middleware/protect");
 
 const router = express.Router();
+
+router.use(protect);
 
 router
   .route("/")
