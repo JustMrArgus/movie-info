@@ -15,3 +15,5 @@ router
   .get(movieController.getMovieById)
   .patch(movieController.updateMovie)
   .delete(movieController.deleteMovie);
+
+module.exports = router;
