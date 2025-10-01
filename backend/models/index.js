@@ -1,6 +1,8 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const path = require("path");
 
+const bcrypt = require("bcrypt");
+
 const sequelize = new Sequelize({
   dialect: "sqlite",
   storage: path.join(__dirname, "../db/db.sqlite"),
@@ -62,17 +64,17 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  passwordConfirm: {
-    type: DataTypes.STRING,
+  confirmPassword: {
+    type: DataTypes.VIRTUAL,
     allowNull: false,
   },
 });
 
-User.beforeCreate((user) => {
-  if (user.password !== user.passwordConfirm) {
+User.beforeCreate(async (user) => {
+  if (user.password !== user.confirmPassword) {
     throw new Error("Passwords do not match!");
   }
-  user.passwordConfirm = undefined;
+  user.password = await bcrypt.hash(user.password, 12);
 });
 
 Movie.belongsToMany(Actor, { through: "MovieActors", as: "actors" });

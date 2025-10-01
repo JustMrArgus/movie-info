@@ -8,7 +8,7 @@ exports.usersCreate = async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      passwordConfirm: req.body.passwordConfirm,
+      confirmPassword: req.body.confirmPassword,
     });
 
     const token = signToken(newUser.id);
