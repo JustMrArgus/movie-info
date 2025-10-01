@@ -61,7 +61,8 @@ class APIFeatures {
   }
 
   limit() {
-    const { limit = 20 } = this.queryString;
+    const { limit } = this.queryString;
+    if (!limit) return this;
     this.options.limit = parseInt(limit, 10);
     return this;
   }

@@ -1,6 +1,10 @@
 const express = require("express");
 const movieController = require("../controllers/movie.controller");
 const protect = require("../middleware/protect");
+const {
+  uploadTxt,
+  parseTxtFile,
+} = require("../middleware/txtMovieDataHandler");
 
 const router = express.Router();
 
@@ -11,7 +15,9 @@ router
   .post(movieController.createMovie)
   .get(movieController.getMovies);
 
-router.route("/import").post(movieController.createManyMovies);
+router
+  .route("/import")
+  .post(uploadTxt, parseTxtFile, movieController.createManyMovies);
 
 router
   .route("/:id")
