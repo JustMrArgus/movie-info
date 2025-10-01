@@ -1,4 +1,4 @@
-const { Movie } = require("../models/index.js");
+const { Movie } = require("../models/index");
 
 exports.createMovie = async (req, res) => {
   try {
