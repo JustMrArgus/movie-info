@@ -43,7 +43,44 @@ const Movie = sequelize.define("Movie", {
   },
 });
 
+const User = sequelize.define(
+  "User",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    passwordConfirm: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+  },
+  {
+    validate: {
+      passwordsMatch() {
+        if (this.password !== this.passwordConfirm) {
+          throw new Error("Passwords are not the same!");
+        }
+      },
+    },
+  }
+);
+
 Movie.belongsToMany(Actor, { through: "MovieActors", as: "actors" });
 Actor.belongsToMany(Movie, { through: "MovieActors", as: "movies" });
 
-module.exports = { sequelize, Movie, Actor };
+module.exports = { sequelize, Movie, Actor, User };
