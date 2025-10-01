@@ -7,6 +7,10 @@ const sequelize = new Sequelize({
   logging: false,
 });
 
+(async () => {
+  await sequelize.query("PRAGMA journal_mode = WAL;");
+})();
+
 const Actor = sequelize.define("Actor", {
   id: {
     type: DataTypes.INTEGER,
