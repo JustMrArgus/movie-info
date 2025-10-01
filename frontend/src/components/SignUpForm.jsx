@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import useStore from "../store/store";
 
-const LogInForm = () => {
-  const [loginFailed, setLoginFailed] = useState(false);
+const SignUpForm = () => {
+  const [signupFailed, setSignupFailed] = useState(false);
 
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const LogInForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await fetch("/api/sessions", {
+      const response = await fetch("/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +27,7 @@ const LogInForm = () => {
       });
 
       if (!response.ok) {
-        setLoginFailed(true);
+        setSignupFailed(true);
         return;
       }
 
@@ -43,7 +43,7 @@ const LogInForm = () => {
   return (
     <div className="bg-white shadow-md flex flex-col gap-5 rounded-md font-lato py-12 px-15">
       <h2 className="uppercase text-3xl font-bold text-green-400">
-        Log Into Your Account
+        Register new account
       </h2>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
         <div className="flex flex-col gap-1 ">
@@ -66,6 +66,20 @@ const LogInForm = () => {
             <p className="text-red-400">{errors.email.message}</p>
           )}
         </div>
+        <div className="flex flex-col gap-1 ">
+          <label htmlFor="name" className="opacity-65 font-bold">
+            Name
+          </label>
+          <input
+            className="bg-[#f2f2f2] py-2 px-4 font-light opacity-60"
+            type="text"
+            id="name"
+            {...register("name", {
+              required: "Name is required",
+            })}
+          />
+          {errors.name && <p className="text-red-400">{errors.name.message}</p>}
+        </div>
 
         <div className="flex flex-col gap-1">
           <label htmlFor="password" className="opacity-65 font-bold">
@@ -86,9 +100,31 @@ const LogInForm = () => {
           {errors.password && (
             <p className="text-red-400">{errors.password.message}</p>
           )}
-          {loginFailed && (
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <label htmlFor="confirmPassword" className="opacity-65 font-bold">
+            Confirm your password
+          </label>
+          <input
+            className="bg-[#f2f2f2] py-2 px-4 font-light opacity-60"
+            type="password"
+            id="confirmPassword"
+            {...register("confirmPassword", {
+              required: "Please confirm you password",
+              minLength: {
+                value: 8,
+                message: "Password must be at least 8 characters",
+              },
+            })}
+          />
+          {errors.password && (
+            <p className="text-red-400">{errors.confirmPassword.message}</p>
+          )}
+          {signupFailed && (
             <p className="text-red-400">
-              Incorrect email or password. Please try again
+              The user with this email is already exists or passwords are not
+              the same
             </p>
           )}
         </div>
@@ -97,13 +133,13 @@ const LogInForm = () => {
           className="bg-linear-to-r text-white from-green-500 to-green-300 px-10 py-4 mt-3 self-start rounded-[2rem] cursor-pointer duration-200 hover:scale-[1.1] hover:shadow-md"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Logging in..." : "Login"}
+          {isSubmitting ? "Signing up" : "Sign Up"}
         </button>
 
         <p className="opacity-65 font-bold mt-3">
-          Don't have an account yet?
+          Already have the account?
           <span className="text-green-500 ml-1 ">
-            <Link to="/signup">Sign Up</Link>
+            <Link to="/login">Log in</Link>
           </span>
         </p>
       </form>
@@ -111,4 +147,4 @@ const LogInForm = () => {
   );
 };
 
-export default LogInForm;
+export default SignUpForm;
