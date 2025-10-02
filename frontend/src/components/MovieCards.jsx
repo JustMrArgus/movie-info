@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
 import AddMovieCard from "./AddMovieCard";
 import MovieDetails from "./MovieDetails";
+import Search from "./Search";
+import ImportCard from "./ImportCard";
 
 const MovieCards = () => {
   const [movies, setMovies] = useState([]);
@@ -10,13 +12,17 @@ const MovieCards = () => {
     clickedMovieCardId: -1,
   });
 
+  const [titleParam, setTitleParam] = useState("");
+  const [actorParam, setActorParam] = useState("");
+  const [searchParam, setSearchParam] = useState("");
+
   useEffect(() => {
     const getMovies = async () => {
       try {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          "/api/movies?actor=&title=&search=&sort=title&order=&limit=&offset=",
+          `/api/movies?actor=${actorParam}&title=${titleParam}&search=${searchParam}&sort=title&order=&limit=&offset=`,
           {
             method: "GET",
             headers: {
@@ -38,24 +44,37 @@ const MovieCards = () => {
     };
 
     getMovies();
-  }, []);
+  }, [titleParam, actorParam, searchParam]);
 
   return (
-    <div>
-      <div className="grid grid-cols-4 w-230 gap-5">
-        {movies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            id={movie.id}
-            title={movie.title}
-            year={movie.year}
-            format={movie.format}
-            moviesHandler={setMovies}
-            clickHandler={setIsClicked}
-          />
-        ))}
-        <AddMovieCard moviesHandler={setMovies} />
+    <div className="flex flex-col items-center justify-center min-h-screen">
+      <div className="max-w-[920px] flex flex-col gap-8 font-lato">
+        <Search
+          titleParam={titleParam}
+          setTitleParam={setTitleParam}
+          actorParam={actorParam}
+          setActorParam={setActorParam}
+          searchParam={searchParam}
+          setSearchParam={setSearchParam}
+        />
+
+        <div className="grid grid-cols-4 gap-5">
+          {movies.map((movie) => (
+            <MovieCard
+              key={movie.id}
+              id={movie.id}
+              title={movie.title}
+              year={movie.year}
+              format={movie.format}
+              moviesHandler={setMovies}
+              clickHandler={setIsClicked}
+            />
+          ))}
+          <AddMovieCard moviesHandler={setMovies} />
+          <ImportCard moviesHandler={setMovies} />
+        </div>
       </div>
+
       <MovieDetails isClicked={isClicked} clickHandler={setIsClicked} />
     </div>
   );

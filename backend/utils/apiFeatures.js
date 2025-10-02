@@ -16,7 +16,7 @@ class APIFeatures {
       this.options.include.push({
         association: "actors",
         where: {
-          name: { [Op.iLike]: `%${actor}%` },
+          name: { [Op.like]: `%${actor}%` },
         },
         required: true,
       });
@@ -27,7 +27,7 @@ class APIFeatures {
   title() {
     const { title } = this.queryString;
     if (title) {
-      this.options.where.title = { [Op.iLike]: `%${title}%` };
+      this.options.where.title = { [Op.like]: `%${title}%` };
     }
     return this;
   }
@@ -38,8 +38,8 @@ class APIFeatures {
       this.options.where = {
         ...this.options.where,
         [Op.or]: [
-          { title: { [Op.iLike]: `%${search}%` } },
-          { "$actors.name$": { [Op.iLike]: `%${search}%` } },
+          { title: { [Op.like]: `%${search}%` } },
+          { "$actors.name$": { [Op.like]: `%${search}%` } },
         ],
       };
 

@@ -60,7 +60,7 @@ const MovieDetails = ({ isClicked, clickHandler }) => {
     <div
       className={
         isClicked.status
-          ? "fixed inset-0 z-50 flex items-center justify-center"
+          ? "fixed font-lato inset-0 z-50 flex items-center justify-center"
           : "hidden"
       }
     >
