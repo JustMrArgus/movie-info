@@ -8,7 +8,7 @@ const LogInForm = () => {
 
   const navigate = useNavigate();
 
-  const { changeAuthenticationStatus } = useStore();
+  const { isAuthenticated, changeAuthenticationStatus } = useStore();
 
   const {
     register,
@@ -33,6 +33,7 @@ const LogInForm = () => {
 
       const result = await response.json();
       changeAuthenticationStatus(true);
+      console.log(isAuthenticated);
       localStorage.setItem("token", result.token);
       navigate("/");
     } catch (error) {
