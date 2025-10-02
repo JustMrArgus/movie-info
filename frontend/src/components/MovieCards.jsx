@@ -47,7 +47,7 @@ const MovieCards = () => {
   }, [titleParam, actorParam, searchParam]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
+    <div className="flex flex-col items-center justify-center min-h-screen py-30">
       <div className="max-w-[920px] flex flex-col gap-8 font-lato">
         <Search
           titleParam={titleParam}

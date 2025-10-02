@@ -20,8 +20,6 @@ const AddMovieCard = ({ moviesHandler }) => {
         .filter((actor) => actor),
     };
 
-    console.log(formattedData);
-
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(`/api/movies/`, {
@@ -46,7 +44,7 @@ const AddMovieCard = ({ moviesHandler }) => {
     }
   };
   return (
-    <div className="bg-green-500 text-white shadow-md pb-3 rounded-3xl px-3 flex flex-col items-center text-center max-w-50 duration-200 hover:scale-[1.1]">
+    <div className="bg-white shadow-md pb-3 rounded-3xl px-3 flex flex-col items-center text-center max-w-50 duration-200 hover:scale-[1.1]">
       {isSelected ? (
         <>
           <div className="w-45 relative">
