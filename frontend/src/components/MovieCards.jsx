@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
+import AddMovieCard from "./AddMovieCard";
 
 const MovieCards = () => {
   const [movies, setMovies] = useState([]);
-
-  const deleteMovieFromList = (id) => {
-    setMovies((prev) => prev.filter((movie) => movie.id !== id));
-  };
 
   useEffect(() => {
     const getMovies = async () => {
@@ -48,9 +45,10 @@ const MovieCards = () => {
             title={movie.title}
             year={movie.year}
             format={movie.format}
-            onDelete={deleteMovieFromList}
+            moviesHandler={setMovies}
           />
         ))}
+        <AddMovieCard moviesHandler={setMovies} />
       </div>
     </div>
   );

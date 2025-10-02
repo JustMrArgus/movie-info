@@ -1,6 +1,6 @@
 import { FaTrashAlt } from "react-icons/fa";
 
-const MovieCard = ({ id, title, format, year, onDelete }) => {
+const MovieCard = ({ id, title, format, year, moviesHandler }) => {
   const deleteMovie = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -12,14 +12,14 @@ const MovieCard = ({ id, title, format, year, onDelete }) => {
         },
       });
 
-      onDelete(id);
+      moviesHandler((prev) => prev.filter((movie) => movie.id !== id));
     } catch (err) {
       console.log("error", err);
     }
   };
 
   return (
-    <div className="bg-white shadow-md pb-3 rounded-3xl px-3 flex flex-col items-center text-center max-w-50 duration-200 hover:scale-[1.1]">
+    <div className="bg-white shadow-md pb-3 rounded-3xl px-3 flex flex-col items-center text-center max-w-50 duration-200 hover:scale-[1.1] cursor-pointer">
       <div className="w-45 relative">
         <img
           src="/img/movie-header-template.jpg"
