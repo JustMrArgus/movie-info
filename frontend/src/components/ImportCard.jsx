@@ -20,11 +20,12 @@ const ImportCard = ({ moviesHandler }) => {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || `Error: ${response.status}`);
+        console.log(result.message || `Error: ${response.status}`);
       }
 
-      console.log("File uploaded:", result);
-      moviesHandler(result.data);
+      moviesHandler((prev) =>
+        [...prev, ...result.data].sort((a, b) => a.title.localeCompare(b.title))
+      );
     } catch (err) {
       console.log("Upload failed:", err);
     }

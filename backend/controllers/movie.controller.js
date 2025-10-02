@@ -11,13 +11,10 @@ exports.createMovie = async (req, res) => {
 
     let actors = [];
     if (req.body.actors && req.body.actors.length > 0) {
-      actors = await Promise.all(
-        req.body.actors.map(async (name) => {
-          const [actor] = await Actor.findOrCreate({ where: { name } });
-          return actor;
-        })
-      );
-
+      for (const name of req.body.actors) {
+        const [actor] = await Actor.findOrCreate({ where: { name } });
+        actors.push(actor);
+      }
       await movie.setActors(actors);
     }
 
