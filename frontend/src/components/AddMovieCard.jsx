@@ -12,6 +12,16 @@ const AddMovieCard = ({ moviesHandler }) => {
   } = useForm();
 
   const addMovie = async (data) => {
+    const formattedData = {
+      ...data,
+      actors: data.actors
+        .split(",")
+        .map((actor) => actor.trim())
+        .filter((actor) => actor),
+    };
+
+    console.log(formattedData);
+
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(`/api/movies/`, {
@@ -20,7 +30,7 @@ const AddMovieCard = ({ moviesHandler }) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(formattedData),
       });
 
       const newMovie = await response.json();
@@ -90,6 +100,22 @@ const AddMovieCard = ({ moviesHandler }) => {
             />
             {errors.year && (
               <p className="text-red-400">{errors.year.message}</p>
+            )}
+            <input
+              type="text"
+              placeholder="Johny Deb, Chris Pratt"
+              className="mt-2 opacity-60 w-[75%]"
+              {...register("actors", {
+                required: "Write down actors",
+                pattern: {
+                  value:
+                    /^(\s*[A-Za-z]+(\s+[A-Za-z]+)?\s*)(,\s*[A-Za-z]+(\s+[A-Za-z]+)?\s*)*$/,
+                  message: "Actors must be separated by commas",
+                },
+              })}
+            />
+            {errors.actors && (
+              <p className="text-red-400">{errors.actors.message}</p>
             )}
             <button className="mt-3 bg-linear-to-r text-white from-green-500 to-green-300 px-10 py-2 rounded-[2rem] cursor-pointer duration-200 hover:scale-[1.1] hover:shadow-md">
               {isSubmitting ? "Adding..." : "Add"}

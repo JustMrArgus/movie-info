@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
 import AddMovieCard from "./AddMovieCard";
+import MovieDetails from "./MovieDetails";
 
 const MovieCards = () => {
   const [movies, setMovies] = useState([]);
+  const [isClicked, setIsClicked] = useState({
+    status: false,
+    clickedMovieCardId: -1,
+  });
 
   useEffect(() => {
     const getMovies = async () => {
@@ -46,10 +51,12 @@ const MovieCards = () => {
             year={movie.year}
             format={movie.format}
             moviesHandler={setMovies}
+            clickHandler={setIsClicked}
           />
         ))}
         <AddMovieCard moviesHandler={setMovies} />
       </div>
+      <MovieDetails isClicked={isClicked} clickHandler={setIsClicked} />
     </div>
   );
 };
