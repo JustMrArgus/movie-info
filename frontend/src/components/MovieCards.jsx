@@ -4,6 +4,10 @@ import MovieCard from "./MovieCard";
 const MovieCards = () => {
   const [movies, setMovies] = useState([]);
 
+  const deleteMovieFromList = (id) => {
+    setMovies((prev) => prev.filter((movie) => movie.id !== id));
+  };
+
   useEffect(() => {
     const getMovies = async () => {
       try {
@@ -40,9 +44,11 @@ const MovieCards = () => {
         {movies.map((movie) => (
           <MovieCard
             key={movie.id}
+            id={movie.id}
             title={movie.title}
             year={movie.year}
             format={movie.format}
+            onDelete={deleteMovieFromList}
           />
         ))}
       </div>
