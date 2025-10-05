@@ -2,9 +2,26 @@ const { Movie, Actor } = require("../models/index");
 const APIFeatures = require("../utils/apiFeatures");
 
 exports.createMovie = async (req, res) => {
+  const titleTrimmed = req.body.title.trim();
+
+  const existingMovie = await Movie.findOne({
+    where: {
+      title: titleTrimmed,
+      year: req.body.year,
+      format: req.body.format,
+    },
+  });
+
+  if (existingMovie) {
+    return res.status(400).json({
+      error: "Movie with this title and year already exists",
+      status: 0,
+    });
+  }
+
   try {
     const movie = await Movie.create({
-      title: req.body.title,
+      title: titleTrimmed,
       year: req.body.year,
       format: req.body.format,
     });
@@ -47,8 +64,21 @@ exports.createManyMovies = async (req, res) => {
     const completeMovies = [];
 
     for (let movieData of req.body) {
+      const titleTrimmed = movieData.title.trim();
+
+      const existingMovie = await Movie.findOne({
+        where: {
+          title: titleTrimmed,
+          year: movieData.year,
+          format: movieData.format,
+        },
+      });
+      if (existingMovie) {
+        continue;
+      }
+
       const movie = await Movie.create({
-        title: movieData.title,
+        title: titleTrimmed,
         year: movieData.year,
         format: movieData.format,
       });

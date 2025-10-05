@@ -4,10 +4,11 @@ import AddMovieCard from "./AddMovieCard";
 import MovieDetails from "./MovieDetails";
 import Search from "./Search";
 import ImportCard from "./ImportCard";
+import MessageModal from "./MessageModal";
 
 const MovieCards = () => {
   const [movies, setMovies] = useState([]);
-  const [isClicked, setIsClicked] = useState({
+  const [isCardClicked, setIsCardClicked] = useState({
     status: false,
     clickedMovieCardId: -1,
   });
@@ -15,6 +16,11 @@ const MovieCards = () => {
   const [titleParam, setTitleParam] = useState("");
   const [actorParam, setActorParam] = useState("");
   const [searchParam, setSearchParam] = useState("");
+  const [modalState, setModalState] = useState({
+    message: "",
+    isOpen: false,
+    type: "error",
+  });
 
   useEffect(() => {
     const getMovies = async () => {
@@ -59,6 +65,11 @@ const MovieCards = () => {
         />
 
         <div className="grid grid-cols-4 gap-5">
+          <AddMovieCard
+            moviesHandler={setMovies}
+            setModalState={setModalState}
+          />
+          <ImportCard moviesHandler={setMovies} setModalState={setModalState} />
           {movies.map((movie) => (
             <MovieCard
               key={movie.id}
@@ -67,15 +78,18 @@ const MovieCards = () => {
               year={movie.year}
               format={movie.format}
               moviesHandler={setMovies}
-              clickHandler={setIsClicked}
+              setModalState={setModalState}
+              setIsCardClicked={setIsCardClicked}
             />
           ))}
-          <AddMovieCard moviesHandler={setMovies} />
-          <ImportCard moviesHandler={setMovies} />
         </div>
       </div>
 
-      <MovieDetails isClicked={isClicked} clickHandler={setIsClicked} />
+      <MovieDetails
+        isCardClicked={isCardClicked}
+        setIsCardClicked={setIsCardClicked}
+      />
+      <MessageModal modalState={modalState} setModalState={setModalState} />
     </div>
   );
 };

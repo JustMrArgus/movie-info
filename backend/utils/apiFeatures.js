@@ -55,9 +55,28 @@ class APIFeatures {
 
   sort() {
     const { sort, order } = this.queryString;
-    const sortField = sort || "id";
+    const sortField = sort || "title";
     const sortOrder = (order || "ASC").toUpperCase();
-    this.options.order = [[sortField, sortOrder]];
+
+    if (sortField === "title") {
+      this.options.order = [
+        [
+          this.model.sequelize.literal(`
+          CASE 
+            WHEN LOWER(title) LIKE 'є%' THEN 'е'
+            WHEN LOWER(title) LIKE 'і%' THEN 'и'
+            WHEN LOWER(title) LIKE 'ї%' THEN 'й'
+            WHEN LOWER(title) LIKE 'ґ%' THEN 'г'
+            ELSE LOWER(title)
+          END
+        `),
+          sortOrder,
+        ],
+      ];
+    } else {
+      this.options.order = [[sortField, sortOrder]];
+    }
+
     return this;
   }
 

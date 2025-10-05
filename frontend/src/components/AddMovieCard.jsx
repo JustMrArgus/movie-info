@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const AddMovieCard = ({ moviesHandler }) => {
+const AddMovieCard = ({ moviesHandler, setModalState }) => {
   const [isSelected, setIsSelected] = useState(false);
 
   const {
@@ -31,11 +31,28 @@ const AddMovieCard = ({ moviesHandler }) => {
         body: JSON.stringify(formattedData),
       });
 
+      if (!response.ok) {
+        if (response.status === 400) {
+          setModalState({
+            type: "error",
+            message: "Movie with the same data is already exists",
+            isOpen: true,
+          });
+        }
+        return;
+      }
+
       const newMovie = await response.json();
 
       moviesHandler((prev) =>
         [...prev, newMovie.data].sort((a, b) => a.title.localeCompare(b.title))
       );
+
+      setModalState({
+        type: "success",
+        message: "The movie was added successfully",
+        isOpen: true,
+      });
 
       reset();
       setIsSelected(false);
@@ -65,6 +82,10 @@ const AddMovieCard = ({ moviesHandler }) => {
               placeholder="Movie's title"
               {...register("title", {
                 required: "Title is required",
+                pattern: {
+                  value: /^(?!\s*$).+/,
+                  message: "Title cannot be only spaces",
+                },
               })}
             />
             {errors.title && (
@@ -94,6 +115,14 @@ const AddMovieCard = ({ moviesHandler }) => {
               className="mt-2 opacity-60 w-[73%]"
               {...register("year", {
                 required: "Choose year of release",
+                min: {
+                  value: 1850,
+                  message: "Enter a year after 1850",
+                },
+                max: {
+                  value: 3000,
+                  message: "Enter a year before 3000.",
+                },
               })}
             />
             {errors.year && (
@@ -105,13 +134,11 @@ const AddMovieCard = ({ moviesHandler }) => {
               className="mt-2 opacity-60 w-[75%]"
               {...register("actors", {
                 required: "Write down actors",
-                pattern: {
-                  value:
-                    /^(\s*[A-Za-z]+(\s+[A-Za-z]+)?\s*)(,\s*[A-Za-z]+(\s+[A-Za-z]+)?\s*)*$/,
-                  message: "Actors must be separated by commas",
-                },
               })}
             />
+            <p className="text-[13px] w-40 text-center opacity-20">
+              use coma to separate actors
+            </p>
             {errors.actors && (
               <p className="text-red-400">{errors.actors.message}</p>
             )}

@@ -6,7 +6,7 @@ const MovieCard = ({
   format,
   year,
   moviesHandler,
-  clickHandler,
+  setIsCardClicked,
 }) => {
   const deleteMovie = async () => {
     const token = localStorage.getItem("token");
@@ -28,7 +28,7 @@ const MovieCard = ({
   return (
     <div
       onClick={() =>
-        clickHandler((prev) => ({
+        setIsCardClicked((prev) => ({
           ...prev,
           status: true,
           clickedMovieCardId: id,

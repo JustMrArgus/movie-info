@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { RxCross1 } from "react-icons/rx";
 
-const MovieDetails = ({ isClicked, clickHandler }) => {
+const MovieDetails = ({ isCardClicked, setIsCardClicked }) => {
   const [movie, setMovie] = useState({
     title: "",
     format: "",
@@ -10,14 +10,15 @@ const MovieDetails = ({ isClicked, clickHandler }) => {
   });
 
   useEffect(() => {
-    if (!isClicked.status || isClicked.clickedMovieCardId === -1) return;
+    if (!isCardClicked.status || isCardClicked.clickedMovieCardId === -1)
+      return;
 
     const getMovies = async () => {
       try {
         const token = localStorage.getItem("token");
 
         const response = await fetch(
-          `/api/movies/${isClicked.clickedMovieCardId}`,
+          `/api/movies/${isCardClicked.clickedMovieCardId}`,
           {
             method: "GET",
             headers: {
@@ -39,7 +40,7 @@ const MovieDetails = ({ isClicked, clickHandler }) => {
     };
 
     getMovies();
-  }, [isClicked]);
+  }, [isCardClicked]);
 
   const listActors = () => {
     let actorsList = "";
@@ -53,13 +54,13 @@ const MovieDetails = ({ isClicked, clickHandler }) => {
   };
 
   const closeModal = () => {
-    clickHandler((prev) => ({ ...prev, status: false }));
+    setIsCardClicked((prev) => ({ ...prev, status: false }));
   };
 
   return (
     <div
       className={
-        isClicked.status
+        isCardClicked.status
           ? "fixed font-lato inset-0 z-50 flex items-center justify-center"
           : "hidden"
       }
