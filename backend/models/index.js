@@ -67,10 +67,6 @@ const Movie = sequelize.define("Movie", {
     allowNull: false,
     validate: {
       notEmpty: { msg: "Format is required" },
-      isIn: {
-        args: [["VHS", "DVD", "Blu-ray"]],
-        msg: "Format must be one of: VHS, DVD, Blu-ray",
-      },
     },
   },
 });
