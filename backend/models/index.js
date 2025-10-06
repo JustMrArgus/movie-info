@@ -1,6 +1,5 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const path = require("path");
-
 const bcrypt = require("bcrypt");
 
 const sequelize = new Sequelize({
@@ -22,6 +21,14 @@ const Actor = sequelize.define("Actor", {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      notEmpty: { msg: "Name cannot be empty" },
+      notNull: { msg: "Name is required" },
+      is: {
+        args: /\S+/,
+        msg: "Name cannot contain only spaces",
+      },
+    },
   },
 });
 
@@ -34,14 +41,37 @@ const Movie = sequelize.define("Movie", {
   title: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      notEmpty: { msg: "Title cannot be empty" },
+      is: {
+        args: /\S+/,
+        msg: "Title cannot contain only spaces",
+      },
+    },
   },
   year: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    validate: {
+      notEmpty: { msg: "Year is required" },
+      isInt: { msg: "Year must be a number" },
+      min: { args: [1850], msg: "Year must be greater than 1850" },
+      max: {
+        args: [3000],
+        msg: "Year cannot be in the future",
+      },
+    },
   },
   format: {
     type: DataTypes.ENUM("VHS", "DVD", "Blu-ray"),
     allowNull: false,
+    validate: {
+      notEmpty: { msg: "Format is required" },
+      isIn: {
+        args: [["VHS", "DVD", "Blu-ray"]],
+        msg: "Format must be one of: VHS, DVD, Blu-ray",
+      },
+    },
   },
 });
 
@@ -55,18 +85,40 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
+    validate: {
+      notEmpty: { msg: "Email cannot be empty" },
+      notNull: { msg: "Email is required" },
+      isEmail: { msg: "Invalid email format" },
+    },
   },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      notEmpty: { msg: "Name cannot be empty" },
+      is: {
+        args: /\S+/,
+        msg: "Name cannot contain only spaces",
+      },
+    },
   },
   password: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      notEmpty: { msg: "Password cannot be empty" },
+      is: {
+        args: /\S+/,
+        msg: "Password cannot contain only spaces",
+      },
+    },
   },
   confirmPassword: {
     type: DataTypes.VIRTUAL,
     allowNull: false,
+    validate: {
+      notEmpty: { msg: "Confirm password cannot be empty" },
+    },
   },
 });
 
