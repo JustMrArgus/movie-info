@@ -10,7 +10,7 @@ const MainPage = () => {
   }
 
   return (
-    <div className="bg-[#f7f7f7] min-h-screen h-full font-lato font-bold">
+    <div className="bg-[#f7f7f7] min-h-screen h-full font-lato font-bold px-5">
       <MovieCards />
     </div>
   );

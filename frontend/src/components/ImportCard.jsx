@@ -1,4 +1,9 @@
-const ImportCard = ({ moviesHandler, setModalState }) => {
+const ImportCard = ({
+  moviesHandler,
+  setModalState,
+  setImportedMoviesCount,
+  setAllMoviesCount,
+}) => {
   const uploadFile = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -19,6 +24,8 @@ const ImportCard = ({ moviesHandler, setModalState }) => {
 
       const result = await response.json();
 
+      console.log(result);
+
       if (!response.ok) {
         setModalState({
           type: "error",
@@ -31,6 +38,9 @@ const ImportCard = ({ moviesHandler, setModalState }) => {
       moviesHandler((prev) =>
         [...prev, ...result.data].sort((a, b) => a.title.localeCompare(b.title))
       );
+
+      setImportedMoviesCount((prev) => prev + result.data.length);
+      setAllMoviesCount((prev) => prev + result.data.length);
 
       setModalState({
         type: "success",

@@ -4,6 +4,8 @@ const DeleteModal = ({
   moviesHandler,
   id,
   title,
+  setAllMoviesCount,
+  setDeletedMoviesCount,
 }) => {
   const closeModal = () => {
     setIsModalOpen(false);
@@ -21,6 +23,9 @@ const DeleteModal = ({
       });
 
       moviesHandler((prev) => prev.filter((movie) => movie.id !== id));
+
+      setAllMoviesCount((prev) => prev - 1);
+      setDeletedMoviesCount((prev) => prev + 1);
     } catch (err) {
       console.log("error", err);
     }
@@ -38,7 +43,7 @@ const DeleteModal = ({
       <div className="z-10 flex justify-center items-center h-full w-full">
         <div className=" bg-green-500 gap-20 text-center w-[50%] px-10 py-20 rounded-lg shadow-lg flex flex-col justify-between text-white text-2xl">
           <p>{`Do you want to delete movie: ${title}?`}</p>
-          <div className="flex justify-center gap-65">
+          <div className="flex sm:flex-row flex-col gap-10 justify-center sm:gap-65">
             <button
               onClick={deleteMovie}
               className="border-2 border-white p-4 rounded-xl duration-200 cursor-pointer hover:scale-[1.1]"

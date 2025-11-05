@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const AddMovieCard = ({ moviesHandler, setModalState }) => {
+const AddMovieCard = ({
+  moviesHandler,
+  setModalState,
+  setAllMoviesCount,
+  setAddedMoviesCount,
+}) => {
   const [isSelected, setIsSelected] = useState(false);
 
   const {
@@ -53,6 +58,9 @@ const AddMovieCard = ({ moviesHandler, setModalState }) => {
         message: "The movie was added successfully",
         isOpen: true,
       });
+
+      setAllMoviesCount((prev) => prev + 1);
+      setAddedMoviesCount((prev) => prev + 1);
 
       reset();
       setIsSelected(false);

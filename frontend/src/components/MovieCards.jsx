@@ -5,6 +5,7 @@ import MovieDetails from "./MovieDetails";
 import Search from "./Search";
 import ImportCard from "./ImportCard";
 import MessageModal from "./MessageModal";
+import TableStats from "./TableStats";
 
 const MovieCards = () => {
   const [movies, setMovies] = useState([]);
@@ -21,6 +22,11 @@ const MovieCards = () => {
     isOpen: false,
     type: "error",
   });
+
+  const [allMoviesCount, setAllMoviesCount] = useState(0);
+  const [importedMoviesCount, setImportedMoviesCount] = useState(0);
+  const [addedMoviesCount, setAddedMoviesCount] = useState(0);
+  const [deletedMoviesCount, setDeletedMoviesCount] = useState(0);
 
   useEffect(() => {
     const getMovies = async () => {
@@ -44,6 +50,7 @@ const MovieCards = () => {
         }
         const result = await response.json();
         setMovies(result.data);
+        setAllMoviesCount(result.data.length);
       } catch (error) {
         console.error("Error", error);
       }
@@ -64,12 +71,19 @@ const MovieCards = () => {
           setSearchParam={setSearchParam}
         />
 
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid sm:grid-cols-4 gap-5 grid-cols-2">
           <AddMovieCard
             moviesHandler={setMovies}
             setModalState={setModalState}
+            setAllMoviesCount={setAllMoviesCount}
+            setAddedMoviesCount={setAddedMoviesCount}
           />
-          <ImportCard moviesHandler={setMovies} setModalState={setModalState} />
+          <ImportCard
+            moviesHandler={setMovies}
+            setModalState={setModalState}
+            setAllMoviesCount={setAllMoviesCount}
+            setImportedMoviesCount={setImportedMoviesCount}
+          />
           {movies.map((movie) => (
             <MovieCard
               key={movie.id}
@@ -80,10 +94,19 @@ const MovieCards = () => {
               moviesHandler={setMovies}
               setModalState={setModalState}
               setIsCardClicked={setIsCardClicked}
+              setAllMoviesCount={setAllMoviesCount}
+              setDeletedMoviesCount={setDeletedMoviesCount}
             />
           ))}
         </div>
       </div>
+
+      <TableStats
+        allMoviesCount={allMoviesCount}
+        addedMoviesCount={addedMoviesCount}
+        importedMoviesCount={importedMoviesCount}
+        deletedMoviesCount={deletedMoviesCount}
+      />
 
       <MovieDetails
         isCardClicked={isCardClicked}

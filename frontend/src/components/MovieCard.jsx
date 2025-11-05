@@ -9,6 +9,8 @@ const MovieCard = ({
   year,
   moviesHandler,
   setIsCardClicked,
+  setAllMoviesCount,
+  setDeletedMoviesCount,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -29,7 +31,7 @@ const MovieCard = ({
         }
         className="bg-white shadow-md pb-3 rounded-3xl px-3 flex flex-col items-center text-center max-w-50 duration-200 hover:scale-[1.1] cursor-pointer"
       >
-        <div className="w-45 relative">
+        <div className="w-full relative">
           <img
             src="/img/movie-header-template.jpg"
             className="max-w-full"
@@ -52,6 +54,8 @@ const MovieCard = ({
         moviesHandler={moviesHandler}
         id={id}
         title={title}
+        setAllMoviesCount={setAllMoviesCount}
+        setDeletedMoviesCount={setDeletedMoviesCount}
       />
     </>
   );
