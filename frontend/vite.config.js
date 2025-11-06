@@ -8,7 +8,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: "https://movie-info-88u2.onrender.com/",
+        target: "http://localhost:8000/api/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
