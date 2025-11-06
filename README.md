@@ -1,5 +1,7 @@
 # Movies
 
+**Deployed version: [LINK](https://movie-info-2.onrender.com/)**
+
 ## Launch
 
 To run the project, follow these steps:
