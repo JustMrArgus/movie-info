@@ -2,7 +2,32 @@
 
 **Deployed version: [LINK](https://movie-info-2.onrender.com/)**
 
-## Launch
+## Launch (Local manual)
+
+### 1. Clone the repository
+```bash
+git clone REPO_URL
+```
+### 2. Configure env file for the API
+```env
+APP_PORT=8000
+JWT_SECRET=aldjadjaldaj
+JWT_EXPIRES_IN=7d
+```
+
+**APP_PORT HAS TO be 8000**
+### 3. Run the API
+```bash
+cd backend
+npm run dev
+```
+### 4. Run the client
+```bash
+cd frontend
+npm run dev
+```
+
+## Launch (Docker version)
 
 To run the project, follow these steps:
 
