@@ -2,7 +2,7 @@
 
 **Deployed version: [LINK](https://movie-info-2.onrender.com/)**
 
-## Launch (Local manual)
+## Launch (Local)
 
 ### 1. Clone the repository
 ```bash
